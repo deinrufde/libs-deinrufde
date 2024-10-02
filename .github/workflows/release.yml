@@ -7,14 +7,9 @@ jobs:
       actions: read
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          token: ${{ secrets.GH_TOKEN }}
-      - name: Setup Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: 18.19.1
       - uses: nrwl/nx-set-shas@v3
       - name: Install deps
         run: npm ci
@@ -23,7 +18,7 @@ jobs:
       - name: Test
         run: npx nx run-many -t test --configuration=ci
       - name: Release
+        run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npx semantic-release

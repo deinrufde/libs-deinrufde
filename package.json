@@ -2,7 +2,9 @@
   "name": "libs-deinrufde",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "semantic-release": "semantic-release"
+  },
   "private": true,
   "devDependencies": {
     "@eslint/js": "^9.8.0",
@@ -32,6 +34,7 @@
     "prettier": "^2.6.2",
     "replace-json-property": "^1.9.0",
     "rollup": "^4.14.0",
+    "semantic-release-npm-github-publish": "^1.5.5",
     "swc-loader": "0.1.15",
     "tslib": "^2.3.0",
     "typescript": "~5.5.2",

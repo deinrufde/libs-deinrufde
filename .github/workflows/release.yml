@@ -24,11 +24,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 'lts/*'
-      # Mark your git directory as safe
-      - name: Set Directory as Safe
-        run: |
-          git config --system --add safe.directory "$GITHUB_WORKSPACE"
-        shell: bash
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         uses: nrwl/nx-set-shas@v4
       - run: |

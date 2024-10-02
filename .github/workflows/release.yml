@@ -11,6 +11,10 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ secrets.GH_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18.19.1
       - uses: nrwl/nx-set-shas@v3
       - name: Install deps
         run: npm ci

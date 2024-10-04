@@ -2,5 +2,7 @@
   "name": "@deinrufde/api-interfaces",
   "version": "0.0.1",
   "dependencies": {},
-  "private": true
+  "publishConfig": {
+    "access": "public"
+  }
 }

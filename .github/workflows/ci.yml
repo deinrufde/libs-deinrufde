@@ -5,6 +5,7 @@ on:
       - '*'
       - '*/*'
       - '**'
+      - '!main'
 jobs:
   main:
     permissions:

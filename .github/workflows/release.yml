@@ -1,21 +1,39 @@
-name: RELEASE
+name: Release
+
 on: [workflow_dispatch]
+
+permissions:
+  contents: write # to be able to publish a GitHub release
+  issues: write # to be able to comment on released issues
+  pull-requests: write # to be able to comment on released pull requests
+  id-token: write # to enable use of OIDC for npm provenance
+  actions: read
+
 jobs:
-  main:
+  release:
+    name: Release
+    permissions:
+      contents: write # to be able to publish a GitHub release
+      issues: write # to be able to comment on released issues
+      pull-requests: write # to be able to comment on released pull requests
+      id-token: write # to enable use of OIDC for npm provenance
+      actions: read
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: nrwl/nx-set-shas@v3
-      - name: Install deps
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+      - env:
+          CI: true
         run: npm ci
-      - name: Lint
-        run: npx nx run-many -t lint
-      - name: Test
-        run: npx nx run-many -t test --configuration=ci
-      - name: Release
-        run: npx semantic-release
+      - if: success()
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          CI: true
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx semantic-release

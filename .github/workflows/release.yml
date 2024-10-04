@@ -1,85 +1,21 @@
-# name: RELEASE
-# on: [workflow_dispatch]
-# jobs:
-#   main:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v2
-#         with:
-#           fetch-depth: 0
-#       - uses: nrwl/nx-set-shas@v3
-#       - name: Install deps
-#         run: npm ci
-#       - name: Lint
-#         run: npx nx run-many -t lint
-#       - name: Test
-#         run: npx nx run-many -t test --configuration=ci
-#       - name: Release
-#         run: npx semantic-release
-#         env:
-#           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-#           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-name: Release
-
+name: RELEASE
 on: [workflow_dispatch]
-
-# on:
-#   push:
-#     branches:
-#       - main
-
-permissions:
-  contents: write # to be able to publish a GitHub release
-  issues: write # to be able to comment on released issues
-  pull-requests: write # to be able to comment on released pull requests
-  id-token: write # to enable use of OIDC for npm provenance
-  actions: read
-
 jobs:
-  release:
-    name: Release
-    permissions:
-      contents: write # to be able to publish a GitHub release
-      issues: write # to be able to comment on released issues
-      pull-requests: write # to be able to comment on released pull requests
-      id-token: write # to enable use of OIDC for npm provenance
-      actions: read
+  main:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 'lts/*'
-      - env:
-          CI: true
+      - uses: nrwl/nx-set-shas@v3
+      - name: Install deps
         run: npm ci
-      - if: success()
-        env:
-          CI: true
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Lint
+        run: npx nx run-many -t lint
+      - name: Test
+        run: npx nx run-many -t test --configuration=ci
+      - name: Release
         run: npx semantic-release
-      # - name: Derive appropriate SHAs for base and head for `nx affected` commands
-      #   uses: nrwl/nx-set-shas@v4
-      # - run: |
-      #     echo "BASE: ${{ env.NX_BASE }}"
-      #     echo "HEAD: ${{ env.NX_HEAD }}"
-      # - name: Install dependencies
-      #   run: npm clean-install
-      # - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
-      #   run: npm audit signatures
-      # - name: Lint
-      #   run: npx nx run-many -t lint
-      # - name: Test
-      #   run: npx nx run-many -t test --configuration=ci
-      # - name: Release
-      #   env:
-      #     GH_TOKEN: ${{ secrets.GH_TOKEN }}
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      #   run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "api-interfaces": ["packages/api-interfaces/src/index.ts"]
+      "@deinrufde/api-interfaces": ["packages/api-interfaces/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

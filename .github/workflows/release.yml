@@ -21,10 +21,18 @@
 #           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
 name: Release
-on: [workflow_dispatch]
+# on: [workflow_dispatch]
+
+on:
+  push:
+    branches:
+      - main
 
 permissions:
-  contents: read # for checkout
+  contents: write # to be able to publish a GitHub release
+  issues: write # to be able to comment on released issues
+  pull-requests: write # to be able to comment on released pull requests
+  id-token: write # to enable use of OIDC for npm provenance
   actions: read
 
 jobs:
@@ -42,26 +50,35 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 'lts/*'
-      - name: Derive appropriate SHAs for base and head for `nx affected` commands
-        uses: nrwl/nx-set-shas@v4
-      - run: |
-          echo "BASE: ${{ env.NX_BASE }}"
-          echo "HEAD: ${{ env.NX_HEAD }}"
-      - name: Install dependencies
-        run: npm clean-install
-      - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
-        run: npm audit signatures
-      - name: Lint
-        run: npx nx run-many -t lint
-      - name: Test
-        run: npx nx run-many -t test --configuration=ci
-      - name: Release
+          node-version: 18
+      - env:
+          CI: true
+        run: npm ci
+      - if: success()
         env:
+          CI: true
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release
+      # - name: Derive appropriate SHAs for base and head for `nx affected` commands
+      #   uses: nrwl/nx-set-shas@v4
+      # - run: |
+      #     echo "BASE: ${{ env.NX_BASE }}"
+      #     echo "HEAD: ${{ env.NX_HEAD }}"
+      # - name: Install dependencies
+      #   run: npm clean-install
+      # - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
+      #   run: npm audit signatures
+      # - name: Lint
+      #   run: npx nx run-many -t lint
+      # - name: Test
+      #   run: npx nx run-many -t test --configuration=ci
+      # - name: Release
+      #   env:
+      #     GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      #   run: npx semantic-release

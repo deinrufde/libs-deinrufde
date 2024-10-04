@@ -1,3 +1,5 @@
+# .releaserc.yaml
+
 branch: main
 ci: false
 dryRun: false

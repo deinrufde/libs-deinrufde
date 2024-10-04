@@ -21,12 +21,12 @@
 #           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
 name: Release
-# on: [workflow_dispatch]
+on: [workflow_dispatch]
 
-on:
-  push:
-    branches:
-      - main
+# on:
+#   push:
+#     branches:
+#       - main
 
 permissions:
   contents: write # to be able to publish a GitHub release

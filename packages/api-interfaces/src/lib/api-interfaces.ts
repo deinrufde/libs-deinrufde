@@ -1,3 +1,3 @@
 export function apiInterfaces(): string {
-  return '';
+  return 'ABC';
 }

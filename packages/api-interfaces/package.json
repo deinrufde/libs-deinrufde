@@ -1,8 +1,0 @@
-{
-  "name": "@deinrufde/api-interfaces",
-  "version": "1.0.0",
-  "dependencies": {},
-  "publishConfig": {
-    "access": "public"
-  }
-}

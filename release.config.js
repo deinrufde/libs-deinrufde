@@ -16,13 +16,13 @@ module.exports = {
   releaseRules: [{ type: 'refactor', release: 'patch' }],
   plugins: [
     '@semantic-release/commit-analyzer',
-    '@semantic-release/release-notes-generator',
-    [
-      '@semantic-release/changelog',
-      {
-        changelogFile: `./CHANGELOG.md`,
-      },
-    ],
+    // '@semantic-release/release-notes-generator',
+    // [
+    //   '@semantic-release/changelog',
+    //   {
+    //     changelogFile: `./CHANGELOG.md`,
+    //   },
+    // ],
     [
       '@semantic-release/exec',
       {
